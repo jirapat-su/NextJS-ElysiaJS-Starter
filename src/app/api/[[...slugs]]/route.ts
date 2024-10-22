@@ -1,6 +1,3 @@
-import { app } from '@/elysia';
+import { elysiaHandler } from '@/elysia';
 
-export const GET = app.handle;
-export const POST = app.handle;
-export const PUT = app.handle;
-export const DELETE = app.handle;
+export const { GET, POST, PUT, DELETE, OPTIONS } = elysiaHandler;
