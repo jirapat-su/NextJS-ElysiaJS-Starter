@@ -1,5 +1,6 @@
 # Base image using Bun
-FROM oven/bun:latest AS base
+FROM imbios/bun-node:latest-18-alpine-git AS build-image
+FROM oven/bun:latest AS base-image
 
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -8,15 +9,14 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Builder stage: install dependencies and build the Next.js app
-FROM base AS builder
+FROM build-image AS builder
 WORKDIR /app
-COPY package.json ./
-RUN bun install --verbose
 COPY . .
+RUN bun install --verbose
 RUN bun run build
 
 # Runner stage: run the Next.js app in production
-FROM base AS runner
+FROM base-image AS runner
 WORKDIR /app
 
 # Create and set up non-root user for security
